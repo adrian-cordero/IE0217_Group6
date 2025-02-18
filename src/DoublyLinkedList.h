@@ -2,65 +2,115 @@
 #define DOUBLYLINKEDLIST_H
 
 #include <iostream>
-#include "Node.h"
-
-using namespace std;
 
 template <typename T>
-
 class DoublyLinkedList {
-    private:
-        Node<T>* head;
-        Node<T>* tail;
-        int length;
+private:
+    struct Node {
+        T value;
+        Node* next;
+        Node* prev;
 
-    public:
-        DoublyLinkedList() : head(nullptr), tail(nullptr), length(0) {}
+        Node(T val) : value(val), next(nullptr), prev(nullptr) {}
+    };
 
-        ~DoublyLinkedList() {
-            Node<T>* temp = head;
-            while (head) {
-                head = head->next;
-                delete temp;
-                temp = head;
-            }
-        }
+    Node* head;
+    Node* tail;
+    int length;
 
-        void append(T value) {
-            Node<T>* newNode = new Node<T>(value);
-            if (length == 0) {
-                head = newNode;
-                tail = newNode;
-            } else {
-                tail->next = newNode;
-                newNode->prev = tail;
-                tail = newNode;
-            }
-            length++;
-        }
+public:
+    DoublyLinkedList() : head(nullptr), tail(nullptr), length(0) {}
 
-        void printList() {
-            Node<T>* temp = head;
-            while (temp != nullptr) {
-                cout << temp->value.getName() << endl;
-                temp = temp->next;
-            }
-        }
-
-        bool isEmpty() const {
-            return length == 0;
-        }
-
-        T removeFirst() {
-            if (length == 0) return T();
-            Node<T>* temp = head;
-            T value = temp->value;
+    ~DoublyLinkedList() {
+        Node* temp = head;
+        while (head) {
             head = head->next;
-            if (head) head->prev = nullptr;
             delete temp;
-            length--;
-            return value;
+            temp = head;
         }
+    }
+
+    void append(T value) {
+        Node* newNode = new Node(value);
+        if (length == 0) {
+            head = newNode;
+            tail = newNode;
+        } else {
+            tail->next = newNode;
+            newNode->prev = tail;
+            tail = newNode;
+        }
+        length++;
+    }
+
+    // Implementación de deleteFirst para eliminar el primer nodo
+    void deleteFirst() {
+        if (length == 0) return;
+        Node* temp = head;
+        head = head->next;
+        if (head) {
+            head->prev = nullptr;
+        } else {
+            tail = nullptr;  // Si la lista se queda vacía, tail también debe ser nulo
+        }
+        delete temp;
+        length--;
+    }
+
+    // Implementación de deleteLast para eliminar el último nodo
+    void deleteLast() {
+        if (length == 0) return;
+        if (length == 1) {
+            deleteFirst();
+            return;
+        }
+        Node* temp = tail;
+        tail = tail->prev;
+        tail->next = nullptr;
+        delete temp;
+        length--;
+    }
+
+    // Implementación de deleteNode que elimina el nodo en el índice dado
+    void deleteNode(int index) {
+        if (index < 0 || index >= length) return;
+        if (index == 0) return deleteFirst();
+        if (index == length - 1) return deleteLast();
+
+        Node* temp = get(index);
+        temp->next->prev = temp->prev;
+        temp->prev->next = temp->next;
+        delete temp;
+        length--;
+    }
+
+    // Método para obtener el puntero al nodo en el índice dado
+    Node* get(int index) {
+        if (index < 0 || index >= length) return nullptr;
+        Node* temp = head;
+        for (int i = 0; i < index; ++i) {
+            temp = temp->next;
+        }
+        return temp;
+    }
+
+    T getHead() const {
+        return head ? head->value : T();
+    }
+
+    int getLength() const {
+        return length;
+    }
+
+    // Método adicional para imprimir la lista (solo para depuración)
+    void printList() const {
+        Node* temp = head;
+        while (temp != nullptr) {
+            std::cout << temp->value << " ";
+            temp = temp->next;
+        }
+        std::cout << std::endl;
+    }
 };
 
-#endif
+#endif  // DOUBLYLINKEDLIST_H

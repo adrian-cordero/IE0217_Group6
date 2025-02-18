@@ -18,7 +18,7 @@ class Queue {
 
         int dequeue() {
             if (dataQueue.empty()) {
-                return INT_MIN;
+                return 0;
             }
             int visitorId = dataQueue.front();
             dataQueue.pop();

@@ -18,21 +18,12 @@ class Visitor {
 
     public:
         //Constructor
-        Visitor(string name, VisitorType type, int groupId = -1)
-        {
-            this.name = name;
-            this.type = type;
-            this.groupId = groupId;
-        }
+        Visitor(string name, VisitorType type, int groupId = -1) : name(name), type(type), groupId(groupId) {}
 
         // Getters y Setters
         string getName() const { return name; }
         VisitorType getType() const { return type; }
         int getGroupId() const { return groupId; }
-
-        string setName( string newName ) const { this.name = newName; }
-        VisitorType setType( VisitorType newType ) const { this.type = VisitorType; }
-        int setGroupId( int newGroupId) const { this.groupId = newGroupId; }
 };
 
 #endif
