@@ -29,10 +29,10 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
 	@mkdir -p $(BUILD_DIR)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-runALL: run
-	./$(TARGET)
+runAll: run
+	./$(BUILD_DIR)/simulacion
 
 clean:
 	rm -rf $(BUILD_DIR)/*.o $(TARGET)
 
-.PHONY: all run runALL clean
+.PHONY: all run runAll clean
