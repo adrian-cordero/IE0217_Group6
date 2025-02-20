@@ -68,15 +68,6 @@ public:
         return length;
     }
 
-    T get(int index) const {
-        if (index >= length || index < 0) return T();
-        Node* current = head;
-        for (int i = 0; current != nullptr && i < index; i++) {
-            current = current->next;
-        }
-        return current->value;
-    }
-
     void deleteFirst() {
         if (length == 0) return;
         Node* temp = head;
@@ -102,13 +93,15 @@ public:
     }
 
     // Función para obtener un puntero al nodo en un índice específico
-    Node* get(int index) {
-        if (index < 0 || index >= length) return nullptr;
+    T get(int index) {
+        if (index >= length || index < 0) {
+            throw std::out_of_range("Índice fuera de rango");
+        }
         Node* temp = head;
         for (int i = 0; i < index; ++i) {
             temp = temp->next;
         }
-        return temp;
+        return temp->value;
     }
 
     // Función para establecer un nuevo valor en un nodo en un índice específico
@@ -125,22 +118,14 @@ public:
         if (index < 0 || index >= length) return;
         if (index == 0) return deleteFirst();
         if (index == length - 1) return deleteLast();
-
-        Node* prev = get(index - 1);
+        Node* prev = head;
+        for (int i = 0; i < index - 1; ++i) {
+            prev = prev->next;
+        }
         Node* temp = prev->next;
-
         prev->next = temp->next;
         delete temp;
         length--;
-    }
-
-    void printList() const {
-        Node* temp = head;
-        while (temp != nullptr) {
-            std::cout << temp->value << " ";
-            temp = temp->next;
-        }
-        std::cout << std::endl;
     }
 };
 

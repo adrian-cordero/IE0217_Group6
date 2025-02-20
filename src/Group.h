@@ -3,27 +3,26 @@
 
 #include <iostream>
 #include "LinkedList.h"
+#include "Visitor.h"
 
 using namespace std;
 
 class Group {
 private:
     int groupId;
-    LinkedList<int> members;
+    LinkedList<Visitor> members;
 
 public:
-    // Constructor por defecto
     Group() : groupId(-1) {}
 
-    // Constructor con un id específico
     Group(int id) : groupId(id) {}
 
     int getGroupId() const {
         return groupId;
     }
 
-    void addMember(int memberId) {
-        members.append(memberId);
+    void addMember(const Visitor& visitor) {
+        members.append(visitor);
     }
 
     void removeMember(int index) {
@@ -34,17 +33,22 @@ public:
         return members.getLength();
     }
 
-    void printMembers() const {
-        cout << "Group " << groupId << " Members:" << endl;
-        members.printList();
-    }
-
     bool isEmpty() const {
         return members.getLength() == 0;
     }
 
-    LinkedList<int>& getMembers() {
+    LinkedList<Visitor>& getMembers() {
         return members;
+    }
+
+    // Método para determinar si el grupo tiene al menos un VIP
+    bool hasVIP() {
+        for (int i = 0; i < members.getLength(); ++i) {
+            if (members.get(i).getType() == VIP) {
+                return true;
+            }
+        }
+        return false;
     }
 };
 

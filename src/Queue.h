@@ -3,7 +3,7 @@
 
 #include <queue>
 #include <iostream>
-#include "Interface.h"
+#include "DummyInferface.h"
 
 using namespace std;
 
@@ -27,17 +27,6 @@ class Queue {
 
         bool isEmpty() const {
             return dataQueue.empty();
-        }
-
-        void display(Interface& interface) {
-            queue<int> tempQueue = dataQueue;
-            cout << "Visitantes en la cola: ";
-            while (!tempQueue.empty()) {
-                cout << tempQueue.front() << " ";
-                tempQueue.pop();
-            }
-            cout << endl;
-            interface.update();
         }
 };
 

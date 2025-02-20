@@ -1,32 +1,33 @@
-#include <SFML/Graphics.hpp>
+//#include <SFML/Graphics.hpp>
 #include "Simulation.h"
 #include "Visitor.h"
 #include "Group.h"
 #include "QueueManager.h"
 #include "Interface.h"
+#include <iostream>
+
+using namespace std;
 
 int main() {
-    // Crear una simulación con una tasa de atención de 2 segundos
-    Simulation simulation(2);  
 
-    // Agregar algunos visitantes individuales
+    DummyInterface interface;
+    Simulation simulation(2, interface);
+
+    // Agregar visitantes individuales
     simulation.addVisitor(Visitor("Juan", REGULAR));
     simulation.addVisitor(Visitor("Maria", VIP));
     simulation.addVisitor(Visitor("Carlos", REGULAR));
 
-    // Crear y agregar un grupo de visitantes
+    // Crear y agregar un grupo VIP
     Group group1(1);
-    group1.addMember(1);
-    group1.addMember(2);
-    group1.addMember(3);
+    group1.addMember(Visitor("VIP1", VIP));
+    group1.addMember(Visitor("Regular1", REGULAR));
 
-    // Crear y agregar otro grupo de visitantes
+    // Crear y agregar un grupo Regular
     Group group2(2);
-    group2.addMember(4);
-    group2.addMember(5);
-    group2.addMember(6);
+    group2.addMember(Visitor("Regular2", REGULAR));
+    group2.addMember(Visitor("Regular3", REGULAR));
 
-    // Agregar los grupos a la simulación
     simulation.addGroup(group1);
     simulation.addGroup(group2);
 
@@ -35,3 +36,4 @@ int main() {
 
     return 0;
 }
+

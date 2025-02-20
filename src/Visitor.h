@@ -17,7 +17,8 @@ class Visitor {
         int groupId;  // -1 como valor default (sin grupo)
 
     public:
-        //Constructor
+        //Constructores
+        Visitor() : name(""), type(REGULAR), groupId(-1) {}
         Visitor(string name, VisitorType type, int groupId = -1) : name(name), type(type), groupId(groupId) {}
 
         // Getters y Setters

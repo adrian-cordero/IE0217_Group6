@@ -45,18 +45,21 @@ public:
 
     // Implementación de deleteFirst para eliminar el primer nodo
     void deleteFirst() {
-        if (length == 0) return;
+        if (head == nullptr) return;
+        
         Node* temp = head;
         head = head->next;
+    
         if (head) {
             head->prev = nullptr;
         } else {
-            tail = nullptr;  // Si la lista se queda vacía, tail también debe ser nulo
+            tail = nullptr;
         }
+    
         delete temp;
         length--;
     }
-
+    
     // Implementación de deleteLast para eliminar el último nodo
     void deleteLast() {
         if (length == 0) return;
