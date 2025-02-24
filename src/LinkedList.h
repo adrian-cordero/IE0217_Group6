@@ -2,15 +2,16 @@
 #define LINKEDLIST_H
 
 #include <iostream>
+using namespace std;
 
 template <typename T>
 class LinkedList {
 private:
     struct Node {
-        T value;
+        T data;
         Node* next;
 
-        Node(T val) : value(val), next(nullptr) {}
+        Node(T val) : data(val), next(nullptr) {}
     };
 
     Node* head;
@@ -28,8 +29,8 @@ public:
         }
     }
 
-    void append(T value) {
-        Node* newNode = new Node(value);
+    void append(T data) {
+        Node* newNode = new Node(data);
         if (!head) {
             head = newNode;
         } else {
@@ -69,12 +70,20 @@ public:
     }
 
     void deleteFirst() {
-        if (length == 0) return;
+        cout << "Entered First Linked List delete First";
+        if (head == nullptr) return; // Ensure the list isn't already empty
+    
         Node* temp = head;
-        head = head->next;
-        delete temp;
+        head = head->next; // Move head to the next node
+    
+        delete temp; // Free the memory of the first node
         length--;
+    
+        if (head == nullptr) { // If the list is now empty, make sure it's properly reset
+            length = 0;
+        }
     }
+    
 
     void deleteLast() {
         if (length == 0) return;
@@ -101,14 +110,22 @@ public:
         for (int i = 0; i < index; ++i) {
             temp = temp->next;
         }
-        return temp->value;
+        return temp->data;
+    }
+
+    T getFirst () {
+        cout << "Entered First Linked List get First";
+        if (head == nullptr) {
+            return nullptr;  // Ensure safe return when the list is empty
+        }
+        return &(head->data);
     }
 
     // Función para establecer un nuevo valor en un nodo en un índice específico
-    bool set(int index, int value) {
+    bool set(int index, int data) {
         Node* temp = get(index);
         if (temp) {
-            temp->value = value;
+            temp->data = data;
             return true;
         }
         return false;

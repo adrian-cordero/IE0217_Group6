@@ -3,30 +3,42 @@
 
 #include <queue>
 #include <iostream>
-#include "DummyInferface.h"
+#include "Visitor.h"
 
 using namespace std;
 
 class Queue {
     private:
-        queue<int> dataQueue;
+        queue<Visitor> dataQueue;
 
     public:
-        void enqueue(int visitorId) {
-            dataQueue.push(visitorId);
+        bool enqueue(const Visitor& visitor) {
+            dataQueue.push(visitor);
+            return true;
         }
 
-        int dequeue() {
+        const Visitor dequeue() {
             if (dataQueue.empty()) {
-                return 0;
+                return Visitor("No visitors left", false, -1, -1);
             }
-            int visitorId = dataQueue.front();
+            Visitor visitor = dataQueue.front();
             dataQueue.pop();
-            return visitorId;
+            return visitor;
         }
 
         bool isEmpty() const {
             return dataQueue.empty();
+        }
+
+        // Function to get the front element of the queue
+        int getFront() {
+      
+        // Checking if the queue is empty
+            if (this->isEmpty()) {
+                cout << "Queue is empty\n";
+                return -1;
+            }
+            return dataQueue.front().getVisitorId();
         }
 };
 

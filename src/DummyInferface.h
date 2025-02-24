@@ -1,4 +1,4 @@
-#ifndef DUMMY_INTERFACE_H
+/*#ifndef DUMMY_INTERFACE_H
 #define DUMMY_INTERFACE_H
 
 #include <iostream>
@@ -25,4 +25,4 @@ public:
     }
 };
 
-#endif // DUMMY_INTERFACE_H
+#endif // DUMMY_INTERFACE_H*/

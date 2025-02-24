@@ -1,5 +1,5 @@
 # Nombre del ejecutable
-TARGET = build/simulacion
+TARGET = build/simulacion.o
 
 # Compilador y banderas
 CXX = g++
@@ -13,7 +13,7 @@ SRC_DIR = src
 BUILD_DIR = build
 
 # Archivos fuente y objetos
-SRCS = $(wildcard $(SRC_DIR)/*.cpp)
+SRCS = $(wildcard $(SRC_DIR)/*.cpp) $(wildcard $(SRC_DIR)/*.h)
 OBJS = $(patsubst $(SRC_DIR)/%.cpp, $(BUILD_DIR)/%.o, $(SRCS))
 
 # Reglas
@@ -30,7 +30,7 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 runAll: run
-	./$(BUILD_DIR)/simulacion
+	./$(BUILD_DIR)/simulacion.o
 
 clean:
 	rm -rf $(BUILD_DIR)/*.o $(TARGET)

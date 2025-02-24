@@ -2,6 +2,7 @@
 #define GROUP_H
 
 #include <iostream>
+#include <string>
 #include "LinkedList.h"
 #include "Visitor.h"
 
@@ -10,10 +11,19 @@ using namespace std;
 class Group {
 private:
     int groupId;
-    LinkedList<Visitor> members;
+    LinkedList<Visitor*> members;
 
 public:
-    Group() : groupId(-1) {}
+
+    Group() {
+        int groupIdInput;
+
+        cout << "Input Group ID (int): ";
+        cin >> groupIdInput;
+        cin.ignore();
+
+        groupId = groupIdInput;
+    }
 
     Group(int id) : groupId(id) {}
 
@@ -21,13 +31,21 @@ public:
         return groupId;
     }
 
-    void addMember(const Visitor& visitor) {
+    void addMember() {
+        cout << "Input Group " << groupId << " visitor information" << endl;
+        Visitor* visitor = new Visitor();
+
         members.append(visitor);
     }
 
-    void removeMember(int index) {
-        members.deleteNode(index);
+    Visitor* getFirst() {
+        return members.getFirst();
     }
+
+    void removeFirst() {
+        members.deleteFirst();
+    }
+
 
     int getGroupSize() const {
         return members.getLength();
@@ -37,14 +55,14 @@ public:
         return members.getLength() == 0;
     }
 
-    LinkedList<Visitor>& getMembers() {
+    /*LinkedList<Visitor>& getMembers() {
         return members;
-    }
+    }*/
 
     // Método para determinar si el grupo tiene al menos un VIP
     bool hasVIP() {
         for (int i = 0; i < members.getLength(); ++i) {
-            if (members.get(i).getType() == VIP) {
+            if (members.get(i)->isVIP()) {
                 return true;
             }
         }

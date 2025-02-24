@@ -114,6 +114,10 @@ public:
         }
         std::cout << std::endl;
     }
+
+    bool isEmpty(){
+        return length == 0;
+    }
 };
 
 #endif  // DOUBLYLINKEDLIST_H
