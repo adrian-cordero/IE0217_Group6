@@ -20,8 +20,3 @@ vcpkg integrate install
 # Como ejecutar
 
 - Usa "make run" para compilar
-- Usa "make runAll" para compilar y ejecutar
-
-# Diagrama
-
-![class Diagram](image.png)
