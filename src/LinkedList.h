@@ -70,7 +70,6 @@ public:
     }
 
     void deleteFirst() {
-        cout << "Entered First Linked List delete First";
         if (head == nullptr) return; // Ensure the list isn't already empty
     
         Node* temp = head;
@@ -114,11 +113,10 @@ public:
     }
 
     T getFirst () {
-        cout << "Entered First Linked List get First";
         if (head == nullptr) {
             return nullptr;  // Ensure safe return when the list is empty
         }
-        return &(head->data);
+        return head->data;
     }
 
     // Función para establecer un nuevo valor en un nodo en un índice específico

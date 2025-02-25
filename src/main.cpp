@@ -1,5 +1,5 @@
 //#include <SFML/Graphics.hpp>
-//#include "Simulation.h"
+#include "Simulation.h"
 #include "Visitor.h"
 #include "Group.h"
 #include "QueueManager.h"
@@ -11,8 +11,8 @@ using namespace std;
 int main() {
 
     //DummyInterface interface;
-    //Simulation simulation(2);             *****
     QueueManager queueTip;
+    Simulation simulation(2, queueTip);
 
     // Agregar visitantes individuales
     Visitor visitor1;
@@ -31,24 +31,15 @@ int main() {
     // Test
     queueTip.enqueueVisitor(visitor1);
     queueTip.enqueueVisitor(visitor2);
-
-    cout << "Queue: " << endl;
-    queueTip.printQueues();
     
     queueTip.enqueueGroup(group1);
     queueTip.enqueueGroup(group2);
 
-    cout << "Queue: " << endl;
-    queueTip.printQueues();
-
-    queueTip.dequeueVisitor(2);
-    queueTip.dequeueVisitor(2);
-    queueTip.dequeueVisitor(2);
-    queueTip.dequeueVisitor(2);
-    queueTip.dequeueVisitor(2);
+    Visitor visitor = queueTip.dequeueVisitor();
+    cout << "Attending visitor" << visitor.getVisitorId() << endl;
 
     // Ejecutar la simulación
-    // simulation.run();
+    simulation.run();
 
     return 0;
 }

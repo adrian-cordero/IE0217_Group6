@@ -27,39 +27,38 @@ public:
     }
 
     void enqueueGroup(Group& group) {
-        while (group.getFirst() != nullptr) {
-            Visitor* temp = group.getFirst();  // Get the first visitor
-            
-            if (group.hasVIP()) {
+        if (group.hasVIP()) {
+            while (group.getFirst() != nullptr) {
+                Visitor* temp = group.getFirst();  // Get the first visitor
                 vipGroups.enqueue(*temp);  // Enqueue the visitor into the VIP queue
-            } else {
-                regularGroups.enqueue(*temp);  // Enqueue the visitor into the regular queue
+                group.removeFirst();  // Remove the visitor safely AFTER processing it
             }
-    
-            group.removeFirst();  // Remove the visitor safely AFTER processing it
+            return ;
+        } else {
+            while (group.getFirst() != nullptr) {
+                Visitor* temp = group.getFirst();  // Get the first visitor
+                regularGroups.enqueue(*temp);
+                group.removeFirst();  // Enqueue the visitor into the regular queue
+            }
+            return ;
         }
     }
 
-    bool dequeueVisitor() {
-        cout << "Entre a dequeue" << endl;
-        if (!vipQueue.isEmpty()) {
+    Visitor dequeueVisitor() {
+        if (!vipQueue.isEmpty()) {     
             Visitor visitor = vipQueue.dequeue();
-            cout << "VIP Visitor dequeue" << visitor.getVisitorId();
-            return true;
+            return visitor;
         } else if (!regularQueue.isEmpty()) {
             Visitor visitor = regularQueue.dequeue();
-            cout << "Regular Visitor dequeue" << visitor.getVisitorId();
-            return true;
+            return visitor;
         } else if (!vipGroups.isEmpty()) {
             Visitor visitor = vipGroups.dequeue();
-            cout << "VIP Group dequeue" << visitor.getVisitorId();
-            return true;
+            return visitor;
         } else if (!regularGroups.isEmpty()) {
             Visitor visitor = regularGroups.dequeue();
-            cout << "Regular Group dequeue" << visitor.getVisitorId();
-            return true;
+            return visitor;
         }
-        return false;
+        return Visitor("", false, -1, -1);
     }
 
     void printQueues () {
