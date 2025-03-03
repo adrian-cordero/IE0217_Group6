@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include <deque>
+#include <queue>
 #include <iostream>
 
 using namespace std;
@@ -10,37 +11,41 @@ using namespace std;
 class Visitor {
 private:
     sf::CircleShape shape;
-    int id;
-    int group;
+    int id, group;
+    float x, y;
     bool dummy;
     sf::Text text;
     static sf::Font font; 
-    sf::Color normalColor;
-    sf::Color hoverColor;
+    sf::Color normalColor, hoverColor;
     static int totalVisitors; 
 
 public:
-
-    Visitor(float x, float y, int group, bool dummy) : group(group), dummy(dummy) {
+    Visitor(int group, bool dummy) : group(group), dummy(dummy) {
         //cout << "Visitor constructor" << endl;
-
-        this->id = totalVisitors;
+        this->x = 0;
+        this->y = 0;
 
         if (dummy) {
-            normalColor = sf::Color::White;  
-            text.setString(" ");
+            normalColor = sf::Color::Transparent;
+            text.setString("");
+            this->id = -1;
         } else if (group == -1) {
             normalColor = sf::Color::Green;
+            this->id = totalVisitors;
             text.setString("Person Id: " + std::to_string(id) + "\nGroup: N/A");
+            totalVisitors++; 
         } else {
             normalColor = sf::Color::Blue;
+            this->id = totalVisitors;
             text.setString("Person Id: " + std::to_string(id) + "\nGroup: " + std::to_string(group));
+            totalVisitors++; 
         }
+        
         hoverColor = sf::Color::Cyan;
 
         shape.setRadius(40);
         shape.setFillColor(normalColor);
-        shape.setPosition(x, y);
+        shape.setPosition(0, 0);
         shape.setOrigin(40, 40);
 
         static bool fontLoaded = false;
@@ -53,18 +58,21 @@ public:
             }
         }
        
-        
         text.setFont(font);
         text.setCharacterSize(8);
         text.setFillColor(sf::Color::Black);
-        text.setPosition(x - 22, y - 12);
+        text.setPosition(x - 22, y - 12);            
 
-        totalVisitors++; 
         //cout << "Total Visitors: " << totalVisitors << endl;
+    }
+
+    int getId() const {
+        return id;
     }
 
     void setPosition(sf::Vector2f pos) {
         shape.setPosition(pos);
+        text.setPosition(pos.x - 22, pos.y - 12);
     }
 
     sf::Vector2f getPosition() const {

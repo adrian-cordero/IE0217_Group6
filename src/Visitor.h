@@ -3,6 +3,7 @@
 
 #include <string>
 #include <iostream>
+#include "VisualVisitor.h"
 
 
 using namespace std;
@@ -16,6 +17,7 @@ class Visitor {
         bool VIP;
         int groupId;  // -1 como valor default (sin grupo)
         int visitorId; // -1 como valor default (no se ha asignado un valor)
+        VisualVisitor visualVisitor;
 
     public:
         //Constructores
@@ -49,6 +51,8 @@ class Visitor {
             VIP = isVIP;
             groupId = -1;
             visitorId = visitorIdInput;
+
+            visualVisitor = VisualVisitor();
         }
         Visitor(string name, bool VIP, int groupId = -1, int visitorId = -1) : name(name), VIP(VIP), groupId(groupId), visitorId(visitorId) {}
 
