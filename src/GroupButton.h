@@ -11,7 +11,7 @@
 #include "OnScreenVisitors.h"
 #include "QueueManager.h"
 
-
+// Group Button class is used to create the object that operates a the group visitor addition button. At the end of development, the 
 class GroupButton {
 private:
     sf::RectangleShape shape;

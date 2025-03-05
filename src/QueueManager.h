@@ -3,7 +3,6 @@
 
 #include "VisualVisitor.h"
 #include "Group.h"
-#include "DoublyLinkedList.h"
 #include <queue>
 #include <deque>
 
@@ -15,19 +14,22 @@ private:
     queue<Visitor> regularQueue;     // Cola para visitantes regulares individuales
     queue<Visitor> vipGroups;        // Lista de grupos con al menos un VIP
     queue<Visitor> regularGroups;    // Lista de grupos regulares
-    deque<Visitor> visitors;
+    deque<Visitor> visitors;        // deque con todos los visitantes
 
 public:
+    // Agregar Visitor VIP
     void enqueueVIPVisitor() {
         Visitor visitor = Visitor(-1, false, true);
         vipQueue.push(visitor);
     }
 
+    // Agregar Visitor regular
     void enqueueRegularVisitor() {
         Visitor visitor = Visitor(-1, false, false);
         regularQueue.push(visitor);
     }
 
+    // Agregar Grupo de visitors regulares
     void enqueueRegularGroup() {
         Group group = Group(false);
         cout << "Group size: " << group.getGroupSize() << endl;
@@ -38,6 +40,7 @@ public:
         }
     }
 
+    // Add group with VIP visitor
     void enqueueVIPGroup() {
         Group group = Group(true);
         
@@ -46,6 +49,7 @@ public:
         }
     }
 
+    // Updates visitor queue if any of the queues is not empty, and has an order of priority defined by push ffront and push back function
     void updateVisitors() {
         if (!vipQueue.empty()) {    
             //cout << "VIP visitor added to visitors" << endl; 
@@ -68,6 +72,7 @@ public:
         }
     }
 
+    // FUnction used for debugging
     void printQueues () {
         cout << "Regular individual queue front: " << regularQueue.front().getId() << endl;
         cout << "VIP individual queue front: " << vipQueue.front().getId() << endl;
@@ -75,6 +80,7 @@ public:
         cout << "VIP group queue front: " << vipGroups.front().getId() << endl;
     }
 
+    // functions below allow access for each queue and deque, allowing modification outside the class
     deque<Visitor>& getVisitors() {
         return visitors;
     }

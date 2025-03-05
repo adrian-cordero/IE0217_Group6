@@ -8,7 +8,7 @@
 #include "OnScreenVisitors.h"
 #include "QueueManager.h"
 
-
+// Individual Button class is used to create the object that operates a the individual visitor addition button
 class IndividualButton {
     private:
     sf::RectangleShape shape;
@@ -19,6 +19,7 @@ class IndividualButton {
 
 public:
     IndividualButton () {
+        // Parameters for creating the button
         shape.setSize(sf::Vector2f(100, 50));
         shape.setOutlineColor(sf::Color::Black);
         shape.setFillColor(normalColor);
@@ -26,18 +27,22 @@ public:
         shape.setPosition(250, 250);
     }
 
+    // Set the position of the button
     void setPosition(sf::Vector2f pos) {
         shape.setPosition(pos);
     }
 
+    // Get the position of the button
     sf::Vector2f getPosition() const {
         return shape.getPosition();
     }
 
+    // Draw the buitton on window
     void draw(sf::RenderWindow& window) const {
         window.draw(shape);
     }
 
+    // Actions carried out to update the button, addition of visitors to queue happen here
     void update(const sf::RenderWindow &window, QueueManager& queueManager) {
 
         if (shape.getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(window)))) {
@@ -58,4 +63,4 @@ public:
         }
     }
 };
-#endif //Button_H
+0.#endif //Button_H
