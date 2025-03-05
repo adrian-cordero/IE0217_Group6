@@ -4,7 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <vector>
-#include <queue>
+#include <deque>
 #include <thread>
 #include <chrono>
 
@@ -13,8 +13,8 @@ using namespace std;
 class OnScreenVisitors {
     private:
         vector<bool> occupiedVctr;
-        vector<Visitor> onScreenVctr;
-        queue<Visitor> visitorQueue;
+        //vector<Visitor> onScreenVctr;
+        deque<Visitor>& visitorQueue;
         int onScreenQty = 7;
         int currentOnScreen = 0;
         const float startX = 90, startY = 100;
@@ -22,33 +22,29 @@ class OnScreenVisitors {
         sf::Clock clock;
     
     public:
-        OnScreenVisitors () {
+        OnScreenVisitors (deque<Visitor>& visitorQueue) : visitorQueue(visitorQueue) {
             this->onScreenQty = 7;
             this->currentOnScreen = 0;
             for (int i = 0; i < onScreenQty; i++) {
                 occupiedVctr.push_back(false);
-                onScreenVctr.push_back(Visitor(-1, true));
             }
         }
 
         void visitorQueuePush(Visitor visitor) {
             //cout << "Visitor added to queue" << endl;
-            visitorQueue.push(visitor);
+            visitorQueue.push_back(visitor);
         }
     
         // Update logic: shift visitors & add new ones
         void update(const sf::RenderWindow &window) {
 
-            // Add visitors from queue to first available positions
-            for (int i = onScreenQty-1; i >= 0 && !visitorQueue.empty(); i--) {
+            for (size_t i = onScreenQty-1; i >= 0 && !visitorQueue.empty(); i--) {
                 //cout << "Checking position " << i << endl;
                 //cout << "Occupied: " << occupiedVctr[i] << endl;
                 if (!occupiedVctr[i]) {
-                    onScreenVctr[i] = visitorQueue.front();
                     //cout << "Position in vector: " << i << endl;
                     //cout << "Get Id: " << onScreenVctr[i].getId() << endl;
                     //cout << "Coordinates: " << i * spacing - startX + 200  << ", " << startY << endl;
-                    visitorQueue.pop();
                     onScreenVctr[i].setPosition(sf::Vector2f(i * spacing - startX + 220, startY));
                     occupiedVctr[i] = true;
                     currentOnScreen++;
@@ -61,25 +57,8 @@ class OnScreenVisitors {
                 // Remove the last visitor in the vector
                 if (occupiedVctr[onScreenQty - 1]) {
                     // Shift all visitors towards the end (to the right)
-                    for (int i = onScreenQty - 2; i >= 0; i--) {
-                        if (occupiedVctr[i]) {
-                            // Shift the visitor to the next position
-                            onScreenVctr[i + 1] = onScreenVctr[i];
-                            occupiedVctr[i + 1] = true;
-
-                            // Update the position of the shifted visitor
-                            onScreenVctr[i + 1].setPosition(sf::Vector2f((i + 1) * spacing - startX + 220, startY));
-
-                            // Clear the original position
-                            occupiedVctr[i] = false;
-                            onScreenVctr[i] = Visitor(-1, true);
-                        }
-                    }
-
-                    // Mark the last position as available
-                    occupiedVctr[onScreenQty - 1] = false;
-                    onScreenVctr[onScreenQty - 1] = Visitor(-1, true);
-                    
+                    visitorQueue.pop_front();
+                    occupiedVctr[onScreenQty - 1 - currentOnScreen] = false;
                     currentOnScreen--;  // Decrease the number of visitors on screen
                 }
 
@@ -90,8 +69,6 @@ class OnScreenVisitors {
             /*for (int i = 0; i < onScreenQty; i++) {
                 cout << "Occupied: " << onScreenVctr[i].getId() << endl;
             }*/
-            
-            //std::this_thread::sleep_for(std::chrono::milliseconds(3000));
 
             // Update all visitors
             for (int i = 0; i < onScreenQty; i++) {
@@ -107,8 +84,8 @@ class OnScreenVisitors {
             //cout << "VisitorMatrix update" << endl;
             //cout << "Matrix size: " << visitorMatrix.size() << " x " << visitorMatrix[0].size() << endl;
 
-            for (int i = 0; i < onScreenQty; ++i) {
-                onScreenVctr[i].draw(window);
+            for (size_t i = 0; i < currentOnScreen; ++i) {
+                visitorQueue[i].draw(window);
             }
         }
 };

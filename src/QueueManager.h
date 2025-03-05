@@ -1,72 +1,106 @@
 #ifndef QUEUEMANAGER_H
 #define QUEUEMANAGER_H
 
-#include "Visitor.h"
+#include "VisualVisitor.h"
 #include "Group.h"
 #include "DoublyLinkedList.h"
-#include "Queue.h"
-//#include "DummyInferface.h"
-#include <unistd.h>
+#include <queue>
+#include <deque>
 
 using namespace std;
 
 class QueueManager {
 private:
-    Queue vipQueue;         // Cola para visitantes VIP individuales
-    Queue regularQueue;     // Cola para visitantes regulares individuales
-    Queue vipGroups;        // Lista de grupos con al menos un VIP
-    Queue regularGroups;    // Lista de grupos regulares
+    queue<Visitor> vipQueue;         // Cola para visitantes VIP individuales
+    queue<Visitor> regularQueue;     // Cola para visitantes regulares individuales
+    queue<Visitor> vipGroups;        // Lista de grupos con al menos un VIP
+    queue<Visitor> regularGroups;    // Lista de grupos regulares
+    deque<Visitor> visitors;
 
 public:
-    void enqueueVisitor(const Visitor& visitor) {
-        if (visitor.isVIP()){
-            vipQueue.enqueue(visitor);
-        } else {
-            regularQueue.enqueue(visitor);
+    void enqueueVIPVisitor() {
+        Visitor visitor = Visitor(-1, false, true);
+        vipQueue.push(visitor);
+    }
+
+    void enqueueRegularVisitor() {
+        Visitor visitor = Visitor(-1, false, false);
+        regularQueue.push(visitor);
+    }
+
+    void enqueueRegularGroup(int n) {
+        Group group = Group(false);
+        for (int i; i<n; i++) {
+            group.addRegMember();
+        }
+        
+        while (group.getFirst() != nullptr) {
+            Visitor* temp = group.getFirst();  
+            regularGroups.push(*temp);  
+            group.removeFirst();  
         }
     }
 
-    void enqueueGroup(Group& group) {
-        if (group.hasVIP()) {
-            while (group.getFirst() != nullptr) {
-                Visitor* temp = group.getFirst();  // Get the first visitor
-                vipGroups.enqueue(*temp);  // Enqueue the visitor into the VIP queue
-                group.removeFirst();  // Remove the visitor safely AFTER processing it
-            }
-            return ;
-        } else {
-            while (group.getFirst() != nullptr) {
-                Visitor* temp = group.getFirst();  // Get the first visitor
-                regularGroups.enqueue(*temp);
-                group.removeFirst();  // Enqueue the visitor into the regular queue
-            }
-            return ;
+    void enqueueVIPGroup(int n) {
+        Group group = Group(true);
+        for (int i; i<n; i++) {
+            group.addRegMember();
+        }
+        
+        while (group.getFirst() != nullptr) {
+            Visitor* temp = group.getFirst();  
+            vipGroups.push(*temp);  
+            group.removeFirst();  
         }
     }
 
-    Visitor dequeueVisitor() {
-        if (!vipQueue.isEmpty()) {     
-            Visitor visitor = vipQueue.dequeue();
-            return visitor;
-        } else if (!regularQueue.isEmpty()) {
-            Visitor visitor = regularQueue.dequeue();
-            return visitor;
-        } else if (!vipGroups.isEmpty()) {
-            Visitor visitor = vipGroups.dequeue();
-            return visitor;
-        } else if (!regularGroups.isEmpty()) {
-            Visitor visitor = regularGroups.dequeue();
-            return visitor;
+    void updateVisitors() {
+        if (!vipQueue.empty()) {     
+            Visitor visitor = vipQueue.front();
+            regularQueue.pop();
+            visitors.push_back(visitor);
+        } else if (!regularQueue.empty()) {
+            Visitor visitor = regularQueue.front();
+            regularQueue.pop();
+            visitors.push_back(visitor);
+        } else if (!vipGroups.empty()) {
+            Visitor visitor = vipGroups.front();
+            regularQueue.pop();
+            visitors.push_back(visitor);
+        } else if (!regularGroups.empty()) {
+            Visitor visitor = regularGroups.front();
+            regularQueue.pop();
+            visitors.push_back(visitor);
         }
-        return Visitor("", false, -1, -1);
     }
 
     void printQueues () {
-        cout << "Regular individual queue front: " << regularQueue.getFront() << endl;
-        cout << "VIP individual queue front: " << vipQueue.getFront() << endl;
-        cout << "Regular group queue front: " << regularGroups.getFront() << endl;
-        cout << "VIP group queue front: " << vipGroups.getFront() << endl;
+        cout << "Regular individual queue front: " << regularQueue.front().getId() << endl;
+        cout << "VIP individual queue front: " << vipQueue.front().getId() << endl;
+        cout << "Regular group queue front: " << regularGroups.front().getId() << endl;
+        cout << "VIP group queue front: " << vipGroups.front().getId() << endl;
     }
+
+    deque<Visitor>& getVisitors() {
+        return visitors;
+    }
+
+    queue<Visitor>& getVIPQueue() {
+        return vipQueue;
+    }
+
+    queue<Visitor>& getRegularQueue() {
+        return regularQueue;
+    }
+
+    queue<Visitor>& getVIPGroups() {
+        return vipGroups;
+    }   
+
+    queue<Visitor>& getRegularGroups() {
+        return regularGroups;
+    }
+
 };
 
 #endif // QUEUEMANAGER_H

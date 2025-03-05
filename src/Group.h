@@ -4,37 +4,45 @@
 #include <iostream>
 #include <string>
 #include "LinkedList.h"
-#include "Visitor.h"
+#include "VisualVisitor.h"
 
 using namespace std;
 
 class Group {
 private:
-    int groupId;
     LinkedList<Visitor*> members;
+    static int groupId;
+    bool vip;
+    int membersCount = 0;
 
 public:
 
-    Group() {
-        int groupIdInput;
-
-        cout << "Input Group ID (int): ";
-        cin >> groupIdInput;
-        cin.ignore();
-
-        groupId = groupIdInput;
+    Group(bool vip) : vip(vip) {
+        groupId++;
+        if (vip) {
+            for (int i = 0; i < 4; ++i) {
+                addVIPMember();
+            }
+        } else {
+            for (int i = 0; i < 4; ++i) {
+                addRegMember();
+            }
+        }
     }
-
-    Group(int id) : groupId(id) {}
 
     int getGroupId() const {
         return groupId;
     }
 
-    void addMember() {
-        cout << "Input Group " << groupId << " visitor information" << endl;
-        Visitor* visitor = new Visitor();
+    void addRegMember() {
+        Visitor* visitor = new Visitor(groupId, false, false);
+        membersCount++;
+        members.append(visitor);
+    }
 
+    void addVIPMember() {
+        Visitor* visitor = new Visitor(groupId, false, true);
+        membersCount++;
         members.append(visitor);
     }
 
