@@ -10,7 +10,7 @@ using namespace std;
 
 class Group {
 private:
-    LinkedList<Visitor*> members;
+    LinkedList<Visitor> members;
     static int groupId;
     bool vip;
     int membersCount = 0;
@@ -18,6 +18,7 @@ private:
 public:
 
     Group(bool vip) : vip(vip) {
+        //cout << "Group constructor" << endl;
         groupId++;
         if (vip) {
             for (int i = 0; i < 4; ++i) {
@@ -35,19 +36,19 @@ public:
     }
 
     void addRegMember() {
-        Visitor* visitor = new Visitor(groupId, false, false);
+        //Visitor* visitor = new Visitor(groupId, false, false);
         membersCount++;
-        members.append(visitor);
+        members.append(Visitor(groupId, false, false));
     }
 
     void addVIPMember() {
-        Visitor* visitor = new Visitor(groupId, false, true);
+        //Visitor* visitor = new Visitor(groupId, false, true);
         membersCount++;
-        members.append(visitor);
+        members.append(Visitor(groupId, false, true));
     }
 
-    Visitor* getFirst() {
-        return members.getFirst();
+    Visitor getVisitor(int index) {
+        return members.get(index);
     }
 
     void removeFirst() {
@@ -68,14 +69,14 @@ public:
     }*/
 
     // Método para determinar si el grupo tiene al menos un VIP
-    bool hasVIP() {
+    /*bool hasVIP() {
         for (int i = 0; i < members.getLength(); ++i) {
             if (members.get(i)->isVIP()) {
                 return true;
             }
         }
         return false;
-    }
+    }*/
 };
 
 #endif  // GROUP_H

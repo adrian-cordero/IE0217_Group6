@@ -28,48 +28,42 @@ public:
         regularQueue.push(visitor);
     }
 
-    void enqueueRegularGroup(int n) {
+    void enqueueRegularGroup() {
         Group group = Group(false);
-        for (int i; i<n; i++) {
-            group.addRegMember();
-        }
-        
-        while (group.getFirst() != nullptr) {
-            Visitor* temp = group.getFirst();  
-            regularGroups.push(*temp);  
-            group.removeFirst();  
+        cout << "Group size: " << group.getGroupSize() << endl;
+        for (int i = 0; i < group.getGroupSize(); i++) { 
+            //cout << "Got Here" << endl;   
+            //Visitor temp = group.getVisitor(i); 
+            regularGroups.push(group.getVisitor(i));
         }
     }
 
-    void enqueueVIPGroup(int n) {
+    void enqueueVIPGroup() {
         Group group = Group(true);
-        for (int i; i<n; i++) {
-            group.addRegMember();
-        }
         
-        while (group.getFirst() != nullptr) {
-            Visitor* temp = group.getFirst();  
-            vipGroups.push(*temp);  
-            group.removeFirst();  
+        for (int i = 0; i < group.getGroupSize(); i++) {
+            vipGroups.push(group.getVisitor(i)); 
         }
     }
 
     void updateVisitors() {
-        if (!vipQueue.empty()) {     
+        if (!vipQueue.empty()) {    
+            //cout << "VIP visitor added to visitors" << endl; 
             Visitor visitor = vipQueue.front();
-            regularQueue.pop();
-            visitors.push_back(visitor);
+            vipQueue.pop();
+            visitors.push_front(visitor);
         } else if (!regularQueue.empty()) {
+            //cout << "Regular visitor added to visitors" << endl; 
             Visitor visitor = regularQueue.front();
             regularQueue.pop();
             visitors.push_back(visitor);
         } else if (!vipGroups.empty()) {
             Visitor visitor = vipGroups.front();
-            regularQueue.pop();
-            visitors.push_back(visitor);
+            vipGroups.pop();
+            visitors.push_front(visitor);
         } else if (!regularGroups.empty()) {
             Visitor visitor = regularGroups.front();
-            regularQueue.pop();
+            regularGroups.pop();
             visitors.push_back(visitor);
         }
     }

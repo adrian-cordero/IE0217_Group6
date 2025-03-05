@@ -32,12 +32,12 @@ public:
         } else if (group == -1) {
             normalColor = sf::Color::Green;
             this->id = totalVisitors;
-            text.setString("Person Id: " + std::to_string(id) + "\nGroup: N/A" + "\nVIP: " + std::to_string(vip));
+            text.setString("Person Id: " + to_string(id) + "\nGroup: N/A" + "\nVIP: " + to_string(vip));
             totalVisitors++; 
         } else {
             normalColor = sf::Color::Blue;
             this->id = totalVisitors;
-            text.setString("Person Id: " + std::to_string(id) + "\nGroup: " + std::to_string(group) + "\nVIP: " + std::to_string(vip));
+            text.setString("Person Id: " + to_string(id) + "\nGroup: " + std::to_string(group) + "\nVIP: " + to_string(vip));
             totalVisitors++; 
         }
         
@@ -63,7 +63,7 @@ public:
         text.setFillColor(sf::Color::Black);
         text.setPosition(x - 22, y - 12);            
 
-        cout << "Total Visitors: " << totalVisitors << endl;
+        //cout << "Total Visitors: " << totalVisitors << endl;
     }
 
     int getId() const {

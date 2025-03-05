@@ -1,5 +1,5 @@
-#ifndef Button_H
-#define Button_H
+#ifndef GroupButton_H
+#define GroupButton_H
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <queue>
@@ -18,7 +18,7 @@ private:
     sf::Clock clock;
     sf::Color normalColor = sf::Color::White;
     sf::Color hoverColor = sf::Color::Cyan;
-    float clickTime = 10.0f;
+    float clickTime = 0.5f;
     float clickTime2 = 0.5f;
 
 public:
@@ -49,13 +49,11 @@ public:
 
             if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && clock.getElapsedTime().asSeconds() >= clickTime) {
                 shape.setFillColor(sf::Color::Blue);
-                queueManager.enqueueRegularGroup(5);
+                queueManager.enqueueRegularGroup();
                 clock.restart();
-            }
-
-            if (sf::Mouse::isButtonPressed(sf::Mouse::Right) && clock.getElapsedTime().asSeconds() >= clickTime) {
+            } else if (sf::Mouse::isButtonPressed(sf::Mouse::Right) && clock.getElapsedTime().asSeconds() >= clickTime) {
                 shape.setFillColor(sf::Color::Blue);
-                queueManager.enqueueVIPGroup(5);
+                queueManager.enqueueVIPGroup();
                 clock.restart();
             }
 
@@ -65,4 +63,4 @@ public:
     }
     
 };
-#endif //Button_H
+#endif //GroupButton_H

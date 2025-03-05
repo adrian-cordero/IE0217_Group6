@@ -15,7 +15,7 @@ class IndividualButton {
     sf::Clock clock;
     sf::Color normalColor = sf::Color::White;
     sf::Color hoverColor = sf::Color::Cyan;
-    float clickTime = 3.0f;
+    float clickTime = 0.5f;
 
 public:
     IndividualButton () {
@@ -46,14 +46,10 @@ public:
             if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && clock.getElapsedTime().asSeconds() >= clickTime) {
                 shape.setFillColor(sf::Color::Blue);
                 queueManager.getRegularQueue().push(Visitor(-1, false, false));
-                queueManager.updateVisitors();
                 clock.restart();
-            }
-
-            if (sf::Mouse::isButtonPressed(sf::Mouse::Right) && clock.getElapsedTime().asSeconds() >= clickTime) {
+            } else if (sf::Mouse::isButtonPressed(sf::Mouse::Right) && clock.getElapsedTime().asSeconds() >= clickTime) {
                 shape.setFillColor(sf::Color::Blue);
                 queueManager.getVIPQueue().push(Visitor(-1, false, true));
-                queueManager.updateVisitors();
                 clock.restart();
             }
 

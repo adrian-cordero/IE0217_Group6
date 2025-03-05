@@ -22,6 +22,7 @@ class OnScreenVisitors {
         const float startX = 90, startY = 100;
         const float spacing = 100;  // Distance between visitors
         sf::Clock clock;
+        int attentionRate = 5;  // Time in seconds to attend each visitor
     
     public:
         OnScreenVisitors (QueueManager& manager) : queueManager(manager), visitorQueue(queueManager.getVisitors()) {
@@ -32,6 +33,7 @@ class OnScreenVisitors {
         }
         
         void update(const sf::RenderWindow &window) {
+            queueManager.updateVisitors();
             for (int i = 0; i < onScreenQty && i < visitorQueue.size(); i++) {
                 visitorQueue[i].setPosition(sf::Vector2f(startX + i * spacing, startY));
                 
@@ -42,10 +44,10 @@ class OnScreenVisitors {
                 }
             }
         
-            if (clock.getElapsedTime().asSeconds() >= 3) {
+            if (clock.getElapsedTime().asSeconds() >= attentionRate) {
                 if (currentOnScreen > 0) {
-                    cout << "Visitor queue size: " << visitorQueue.size() << endl;
-                    cout << "Current visitor id: " << visitorQueue.front().getId() << endl;
+                    //cout << "Visitor queue size: " << visitorQueue.size() << endl;
+                    //cout << "Current visitor id: " << visitorQueue.front().getId() << endl;
                     visitorQueue.pop_front();
 
                     for (int i = 0; i < onScreenQty - 2; ++i) {
@@ -60,7 +62,7 @@ class OnScreenVisitors {
         
                     currentOnScreen--;
                 }
-        
+                
                 clock.restart();
             }
         }

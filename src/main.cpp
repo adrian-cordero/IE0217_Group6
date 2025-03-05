@@ -2,7 +2,7 @@
 #include <deque>
 #include <iostream>
 #include "IndividualButton.h"
-//#include "GroupButton.h"
+#include "GroupButton.h"
 #include "VisualVisitor.h"
 #include "OnScreenVisitors.h"
 
@@ -18,7 +18,7 @@ int main() {
     sf::RenderWindow window(sf::VideoMode(800, 600), "SFML Window");
     sf::Color Beige(245, 245, 220);
     IndividualButton indButton;
-    //GroupButton groupButton;
+    GroupButton groupButton;
     QueueManager queueManager;
 
     OnScreenVisitors visitorVctr(queueManager);
@@ -38,16 +38,15 @@ int main() {
         /*visitorMatrix1.update();*/
         visitorVctr.update(window);
         indButton.update(window, queueManager);
-        //groupButton.update(window, queueManager);
+        groupButton.update(window, queueManager);
 
         // Clear the screen
         window.clear(Beige);
 
         // Draw things here (optional)
-        //visitorMatrix1.draw(window);
         visitorVctr.draw(window);
         indButton.draw(window);
-        //groupButton.draw(window);
+        groupButton.draw(window);
 
 
         // Display what has been drawn
