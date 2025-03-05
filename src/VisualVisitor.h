@@ -90,7 +90,7 @@ public:
         //cout << "Visitor text draw" << endl;
     }
 
-    void update(const sf::RenderWindow &window, deque<Visitor>& visitorQueue, int i) {
+    void update(const sf::RenderWindow &window) {
         // Check if the mouse is over the button
         if (shape.getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(window)))) {
             shape.setFillColor(hoverColor);
